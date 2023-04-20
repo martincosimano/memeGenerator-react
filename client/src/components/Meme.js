@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React from 'react';
 
 export default function Meme() {
-  const [url, setUrl] = useState("");
+  const [memeImage, setMemeImage] = React.useState("");
 
   function getMemeImage() {
     fetch("/api/memes")
       .then((response) => response.json())
       .then((data) => {
         const randomNumber = Math.floor(Math.random() * data.length);
-        setUrl(data[randomNumber].url);
+        setMemeImage(data[randomNumber].url);
       })
       .catch((error) => {
         console.error(error);
@@ -18,7 +18,6 @@ export default function Meme() {
 
   return (
     <main>
-      <img src={url} className="meme-image" />
       <div className="form">
         <input type="text" placeholder="Top text" className="form--input" />
         <input
@@ -30,6 +29,7 @@ export default function Meme() {
           Get a new meme image
         </button>
       </div>
+      <img src={memeImage} className="meme--image" />
     </main>
   );
 }
