@@ -6,23 +6,25 @@ export default function Meme() {
     bottomText: "",
     randomImage: ""
   });
+  const [allMemes, setAllMemes] = React.useState([])
+
+  React.useEffect(() => {
+    async function getMemes() {
+      const res = await fetch("/api/memes")
+      const data = await res.json()
+      setAllMemes(data)
+    }
+    getMemes()
+  }, [])
 
   function getMemeImage() {
-    fetch("/api/memes")
-      .then((response) => response.json())
-      .then((data) => {
-        const randomNumber = Math.floor(Math.random() * data.length);
-        const url = data[randomNumber].url
-        setMeme(prevMeme => ({
-          ...prevMeme,
-          randomImage: url
-        }));
-      })
-      .catch((error) => {
-        console.error(error);
-        console.log("Error fetching memes");
-      });
-  }
+    const randomNumber = Math.floor(Math.random() * allMemes.length);
+    const url = allMemes[randomNumber].url;
+      setMeme(prevMeme => ({
+        ...prevMeme,
+        randomImage: url
+      }));
+    }
 
   function handleChange(event) {
     const {name, value} = event.target;
